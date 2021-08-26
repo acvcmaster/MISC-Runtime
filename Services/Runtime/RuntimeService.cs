@@ -20,6 +20,7 @@ namespace MISCRuntime.Services
         {
             // Assemble file
             // Generate debug symbols (map instruction to line)
+            Reset();
             // Load in memory
             Loaded = true;
             return new DebugResponseModel() { Event = string.Empty };
@@ -46,7 +47,11 @@ namespace MISCRuntime.Services
         public void Reset()
         {
             ClearBreakpoints();
-            // clear variables (registers, IP, etc)
+
+            R1 = 0; R2 = 0;
+            R3 = 0; R4 = 0;
+            IP = 0;
+
             // stop execution
         }
 
@@ -63,6 +68,12 @@ namespace MISCRuntime.Services
 
             // start
             return new DebugResponseModel() { Event = model.StopOnEntry ? "stopOnEntry" : null };
+        }
+
+        public DebugResponseModel Step()
+        {
+            IP += 4;
+            return new DebugResponseModel() { Event = "stopOnStep" };
         }
 
         public BreakpointModel SetBreakpoint(BreakpointModel model)
@@ -102,6 +113,15 @@ namespace MISCRuntime.Services
                 },
                 Count = 1
             };
+        }
+        public IEnumerable<VariableModel> GetVariables()
+        {
+            yield return new VariableModel() { Name = "R1", Value = $"0x{R1.ToString("X")}" };
+            yield return new VariableModel() { Name = "R2", Value = $"0x{R2.ToString("X")}" };
+            yield return new VariableModel() { Name = "R3", Value = $"0x{R3.ToString("X")}" };
+            yield return new VariableModel() { Name = "R4", Value = $"0x{R4.ToString("X")}" };
+            yield return new VariableModel() { Name = "IP", Value = $"0x{IP.ToString("X")}" };
+            yield break;
         }
     }
 }

@@ -16,7 +16,8 @@ namespace MISCRuntime.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok();
+            var result = Runtime.GetVariables();
+            return Ok(result);
         }
 
         [HttpPost]

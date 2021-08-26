@@ -42,5 +42,12 @@ namespace MISCRuntime.Controllers
             Console.WriteLine(result?.Error);
             return Ok(result);
         }
+
+        [HttpPatch]
+        public IActionResult Step()
+        {
+            var result = Runtime.Step();
+            return Ok(result);
+        }
     }
 }
