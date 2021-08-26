@@ -18,7 +18,6 @@ namespace MISCRuntime.Controllers
         public IActionResult Load(DebugLoadModel model)
         {
             var result = Runtime.Load(model);
-            Console.WriteLine("Load");
             return Ok(result);
         }
 
@@ -38,8 +37,6 @@ namespace MISCRuntime.Controllers
         public async Task<IActionResult> Start([FromBody] DebugRequestModel model)
         {
             var result = await Runtime.Start(model);
-            Console.WriteLine("Start");
-            Console.WriteLine(result?.Error);
             return Ok(result);
         }
 
